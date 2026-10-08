@@ -23,7 +23,7 @@ function expectStringArray(
   if (value === undefined) return undefined;
   if (!Array.isArray(value) || !value.every((v) => typeof v === "string")) {
     throw new Error(
-      `agent-eval: case "${caseName}" field "${field}" must be a list of strings.`
+      `agent-eval-ci: case "${caseName}" field "${field}" must be a list of strings.`
     );
   }
   return value as string[];
@@ -31,28 +31,28 @@ function expectStringArray(
 
 function validateCase(raw: unknown, source: string): EvalCase {
   if (!isRecord(raw)) {
-    throw new Error(`agent-eval: ${source} contains a case that is not a mapping.`);
+    throw new Error(`agent-eval-ci: ${source} contains a case that is not a mapping.`);
   }
   const name = raw["name"];
   const input = raw["input"];
   if (typeof name !== "string" || name.length === 0) {
-    throw new Error(`agent-eval: ${source} has a case without a string "name".`);
+    throw new Error(`agent-eval-ci: ${source} has a case without a string "name".`);
   }
   if (typeof input !== "string") {
     throw new Error(
-      `agent-eval: case "${name}" in ${source} is missing a string "input".`
+      `agent-eval-ci: case "${name}" in ${source} is missing a string "input".`
     );
   }
   const maxCostUsd = raw["max_cost_usd"];
   if (maxCostUsd !== undefined && typeof maxCostUsd !== "number") {
     throw new Error(
-      `agent-eval: case "${name}" field "max_cost_usd" must be a number.`
+      `agent-eval-ci: case "${name}" field "max_cost_usd" must be a number.`
     );
   }
   const maxToolCalls = raw["max_tool_calls"];
   if (maxToolCalls !== undefined && typeof maxToolCalls !== "number") {
     throw new Error(
-      `agent-eval: case "${name}" field "max_tool_calls" must be a number.`
+      `agent-eval-ci: case "${name}" field "max_tool_calls" must be a number.`
     );
   }
   const judge = raw["judge"];
@@ -60,7 +60,7 @@ function validateCase(raw: unknown, source: string): EvalCase {
   if (judge !== undefined) {
     if (!isRecord(judge) || typeof judge["rubric"] !== "string") {
       throw new Error(
-        `agent-eval: case "${name}" field "judge" must be a mapping with a string "rubric".`
+        `agent-eval-ci: case "${name}" field "judge" must be a mapping with a string "rubric".`
       );
     }
     judgeSpec = { rubric: judge["rubric"] as string };
@@ -87,12 +87,12 @@ function loadFile(filePath: string): EvalCase[] {
     doc = parse(text);
   } catch (err) {
     throw new Error(
-      `agent-eval: failed to parse ${filePath}: ${(err as Error).message}`
+      `agent-eval-ci: failed to parse ${filePath}: ${(err as Error).message}`
     );
   }
   if (!Array.isArray(doc)) {
     throw new Error(
-      `agent-eval: ${filePath} must contain a YAML list of cases.`
+      `agent-eval-ci: ${filePath} must contain a YAML list of cases.`
     );
   }
   return doc.map((raw) => validateCase(raw, filePath));
@@ -103,14 +103,14 @@ export function loadCases(target: string): EvalCase[] {
   const resolved = resolve(target);
   const stat = statSync(resolved, { throwIfNoEntry: false });
   if (!stat) {
-    throw new Error(`agent-eval: evals path not found: ${target}`);
+    throw new Error(`agent-eval-ci: evals path not found: ${target}`);
   }
   if (stat.isDirectory()) {
     const files = readdirSync(resolved)
       .filter((f) => YAML_EXT.has(extname(f).toLowerCase()))
       .sort();
     if (files.length === 0) {
-      throw new Error(`agent-eval: no YAML files found in ${target}`);
+      throw new Error(`agent-eval-ci: no YAML files found in ${target}`);
     }
     return files.flatMap((f) => loadFile(join(resolved, f)));
   }

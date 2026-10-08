@@ -2,7 +2,7 @@
 
 **Your agent will break in production. Catch it in CI.**
 
-`agent-eval` is a tiny YAML eval harness for AI agents. Declare inputs, expected tools, and cost caps in YAML; get a nonzero exit when the agent misbehaves. No SaaS, no API keys, no provider calls inside the library. One dependency (`yaml`).
+`agent-eval-ci` is a tiny YAML eval harness for AI agents. Declare inputs, expected tools, and cost caps in YAML; get a nonzero exit when the agent misbehaves. No SaaS, no API keys, no provider calls inside the library. One dependency (`yaml`).
 
 ## Quickstart
 
@@ -37,7 +37,7 @@ export default async function agent(input) {
 Run it:
 
 ```bash
-agent-eval run --agent ./agent.js --evals ./evals/
+agent-eval-ci run --agent ./agent.js --evals ./evals/
 ```
 
 ```
@@ -50,7 +50,7 @@ Any failure exits nonzero, so it drops straight into CI:
 
 ```yaml
 # .github/workflows/evals.yml
-- run: agent-eval run --agent ./agent.js --evals ./evals/
+- run: agent-eval-ci run --agent ./agent.js --evals ./evals/
 ```
 
 ## Install
@@ -59,7 +59,7 @@ Any failure exits nonzero, so it drops straight into CI:
 npm install -g github:richardsondx/agent-eval-ci
 ```
 
-(The npm registry package `@richardsondx/agent-eval` is coming; the GitHub install works today.)
+The `agent-eval-ci` npm package is publishing soon; the GitHub install works today.
 
 ## The agent contract
 
@@ -91,10 +91,10 @@ Point at a baseline file to catch regressions between runs:
 
 ```bash
 # first run: writes baseline.jsonl, exits 0
-agent-eval run --agent ./agent.js --evals ./evals/ --baseline ./baseline.jsonl
+agent-eval-ci run --agent ./agent.js --evals ./evals/ --baseline ./baseline.jsonl
 
 # later runs: diffs against it
-agent-eval run --agent ./agent.js --evals ./evals/ --baseline ./baseline.jsonl
+agent-eval-ci run --agent ./agent.js --evals ./evals/ --baseline ./baseline.jsonl
 ```
 
 ```
@@ -117,7 +117,7 @@ For checks no matcher can express, add a rubric and supply a judge function. The
 ```
 
 ```bash
-agent-eval run --agent ./agent.js --evals ./evals/ --judge ./judge.js
+agent-eval-ci run --agent ./agent.js --evals ./evals/ --judge ./judge.js
 ```
 
 ```js
@@ -131,7 +131,7 @@ export default async function judge(output, evalCase) {
 ## Library use
 
 ```ts
-import { loadCases, runEvals } from "@richardsondx/agent-eval";
+import { loadCases, runEvals } from "agent-eval-ci";
 
 const cases = loadCases("./evals/");
 const { results, summary } = await runEvals(cases, myAgent, { judgeFn });

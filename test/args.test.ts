@@ -14,7 +14,7 @@ describe("parseArgs", () => {
   it("parses the full run command", () => {
     const args = parseArgs([
       "node",
-      "agent-eval",
+      "agent-eval-ci",
       "run",
       "--agent",
       "./agent.js",

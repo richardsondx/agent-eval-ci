@@ -1,5 +1,5 @@
 /**
- * Public types for agent-eval.
+ * Public types for agent-eval-ci.
  *
  * The harness is framework-agnostic: adapt your LangGraph, Vercel AI SDK,
  * or CrewAI agent into AgentFn and the runner does the rest.

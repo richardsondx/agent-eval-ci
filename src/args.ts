@@ -31,7 +31,7 @@ export function parseArgs(argv: string[]): CliArgs {
       case "--judge": {
         const value = rest[++i];
         if (!value || value.startsWith("-")) {
-          throw new Error(`agent-eval: ${flag} requires a value.`);
+          throw new Error(`agent-eval-ci: ${flag} requires a value.`);
         }
         if (flag === "--agent") args.agent = value;
         if (flag === "--evals") args.evals = value;
@@ -50,17 +50,17 @@ export function parseArgs(argv: string[]): CliArgs {
         args.command = "__help";
         return args;
       default:
-        throw new Error(`agent-eval: unknown flag ${flag}.`);
+        throw new Error(`agent-eval-ci: unknown flag ${flag}.`);
     }
   }
   return args;
 }
 
 export function printUsage(): void {
-  console.log(`agent-eval: tiny YAML eval harness for AI agents.
+  console.log(`agent-eval-ci: tiny YAML eval harness for AI agents.
 
 Usage:
-  agent-eval run --agent ./agent.js --evals ./evals/ [options]
+  agent-eval-ci run --agent ./agent.js --evals ./evals/ [options]
 
 Options:
   --agent <path>        JS module exporting the agent (default export) as AgentFn
@@ -78,7 +78,7 @@ export async function loadFn<T>(path: string, kind: string): Promise<T> {
   const fn = (mod["default"] ?? mod) as unknown;
   if (typeof fn !== "function") {
     throw new Error(
-      `agent-eval: ${kind} module ${path} must export a function (default export).`
+      `agent-eval-ci: ${kind} module ${path} must export a function (default export).`
     );
   }
   return fn as T;

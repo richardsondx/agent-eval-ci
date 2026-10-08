@@ -23,7 +23,7 @@ export function readJsonl(path: string): EvalResult[] {
       try {
         return JSON.parse(line) as EvalResult;
       } catch {
-        throw new Error(`agent-eval: invalid JSON on line ${i + 1} of ${path}`);
+        throw new Error(`agent-eval-ci: invalid JSON on line ${i + 1} of ${path}`);
       }
     });
 }

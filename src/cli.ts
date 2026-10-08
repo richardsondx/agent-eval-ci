@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * agent-eval CLI.
+ * agent-eval-ci CLI.
  *
- *   agent-eval run --agent ./agent.js --evals ./evals/ [--baseline ./baseline.jsonl] [--update-baseline] [--judge ./judge.js] [--json]
+ *   agent-eval-ci run --agent ./agent.js --evals ./evals/ [--baseline ./baseline.jsonl] [--update-baseline] [--judge ./judge.js] [--json]
  *
  * Exits 1 when any case fails, 0 when all pass, 2 on usage errors.
  */
@@ -27,12 +27,12 @@ async function main(): Promise<number> {
     return args.command === "__help" ? 0 : 2;
   }
   if (args.command !== "run") {
-    console.error(`agent-eval: unknown command '${args.command}', expected 'run'.`);
+    console.error(`agent-eval-ci: unknown command '${args.command}', expected 'run'.`);
     printUsage();
     return 2;
   }
   if (!args.agent || !args.evals) {
-    console.error("agent-eval: --agent and --evals are required.");
+    console.error("agent-eval-ci: --agent and --evals are required.");
     printUsage();
     return 2;
   }
@@ -101,6 +101,6 @@ main()
     process.exitCode = code;
   })
   .catch((err) => {
-    console.error(`agent-eval: ${(err as Error).message}`);
+    console.error(`agent-eval-ci: ${(err as Error).message}`);
     process.exitCode = 2;
   });

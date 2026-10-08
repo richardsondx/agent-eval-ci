@@ -1,5 +1,5 @@
 /**
- * agent-eval: your agent will break in production. Catch it in CI.
+ * agent-eval-ci: your agent will break in production. Catch it in CI.
  *
  * Tiny YAML eval harness for AI agents: declare inputs, expected tools,
  * and cost caps; get a nonzero exit when the agent misbehaves.
